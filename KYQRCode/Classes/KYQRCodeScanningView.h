@@ -46,8 +46,8 @@ typedef enum : NSUInteger {
 @interface KYQRCodeScanningView : UIView
 /** 扫描样式，默认 ScanningAnimationStyleDefault */
 @property (nonatomic, assign) ScanningAnimationStyle scanningAnimationStyle;
-/** 扫描线名 */
-@property (nonatomic, copy) NSString *scanningImageName;
+/** 自定义扫描线名的图片资源 */
+@property (nonatomic, strong) UIImage *scanningImage;
 /** 边框颜色，默认白色 */
 @property (nonatomic, strong) UIColor *borderColor;
 /** 边角位置，默认 CornerLoactionDefault */

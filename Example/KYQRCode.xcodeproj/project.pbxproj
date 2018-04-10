@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5A8711F22BF1FC104A1D8833 /* Pods_KYQRCode_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95FA66583BF232FDEE40DD8F /* Pods_KYQRCode_Example.framework */; };
+		5A8711F22BF1FC104A1D8833 /* Pods_KYQRCode_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95FA66583BF232FDEE40DD8F /* Pods_KYQRCode_Example.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -27,7 +27,7 @@
 		BC023988207C6B150035A11B /* KYCreateQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC023987207C6B150035A11B /* KYCreateQRCodeViewController.m */; };
 		BC02398B207C6B710035A11B /* KYQRCodeScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC02398A207C6B710035A11B /* KYQRCodeScanningViewController.m */; };
 		BC02398E207C6BCC0035A11B /* KYGridQRCodeScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC02398D207C6BCC0035A11B /* KYGridQRCodeScanningViewController.m */; };
-		BC023990207C9A9B0035A11B /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = BC02398F207C9A9B0035A11B /* sound.caf */; };
+		BC023992207CAD0E0035A11B /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = BC023991207CAD0E0035A11B /* sound.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +75,7 @@
 		BC02398A207C6B710035A11B /* KYQRCodeScanningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYQRCodeScanningViewController.m; sourceTree = "<group>"; };
 		BC02398C207C6BCC0035A11B /* KYGridQRCodeScanningViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KYGridQRCodeScanningViewController.h; sourceTree = "<group>"; };
 		BC02398D207C6BCC0035A11B /* KYGridQRCodeScanningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYGridQRCodeScanningViewController.m; sourceTree = "<group>"; };
-		BC02398F207C9A9B0035A11B /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sound.caf; path = ../../KYQRCode/Classes/KYQRCode.bundle/sound.caf; sourceTree = "<group>"; };
+		BC023991207CAD0E0035A11B /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sound.caf; path = ../../KYQRCode/Assets/sound.caf; sourceTree = "<group>"; };
 		DE26246A27F6E5363DDD23B7 /* Pods-KYQRCode_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KYQRCode_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KYQRCode_Tests/Pods-KYQRCode_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		ED73CFC5CC21740BE7A8A44E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -165,7 +165,6 @@
 		6003F594195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				BC02398F207C9A9B0035A11B /* sound.caf */,
 				6003F595195388D20070C39A /* KYQRCode-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
 				6003F599195388D20070C39A /* main.m */,
@@ -186,6 +185,7 @@
 		6003F5B6195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BC023991207CAD0E0035A11B /* sound.caf */,
 				6003F5B7195388D20070C39A /* Tests-Info.plist */,
 				6003F5B8195388D20070C39A /* InfoPlist.strings */,
 				606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */,
@@ -302,7 +302,7 @@
 			files = (
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
-				BC023990207C9A9B0035A11B /* sound.caf in Resources */,
+				BC023992207CAD0E0035A11B /* sound.caf in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);

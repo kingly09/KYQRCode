@@ -64,7 +64,16 @@
     _cornerWidth = 2.0;
     _backgroundAlpha = 0.5;
     _animationTimeInterval = 0.02;
-    _scanningImageName = @"KYQRCode.bundle/QRCodeScanningLine";
+  
+  NSString *bundlePath = [[NSBundle bundleForClass:[self class]].resourcePath
+                          stringByAppendingPathComponent:@"/KYQRCode.bundle"];
+  NSBundle *resource_bundle = [NSBundle bundleWithPath:bundlePath];
+  UIImage *image = [UIImage imageNamed:@"QRCodeScanningLine"
+                              inBundle:resource_bundle
+         compatibleWithTraitCollection:nil];
+  
+  _scanningImage = image;
+  
 }
 
 - (UIView *)contentView {
@@ -292,7 +301,8 @@
 - (UIImageView *)scanningline {
     if (!_scanningline) {
         _scanningline = [[UIImageView alloc] init];
-        _scanningline.image = [UIImage imageNamed:self.scanningImageName];
+    
+        _scanningline.image = _scanningImage;
     }
     return _scanningline;
 }
@@ -300,10 +310,29 @@
 #pragma mark - - - set
 - (void)setScanningAnimationStyle:(ScanningAnimationStyle)scanningAnimationStyle {
     _scanningAnimationStyle = scanningAnimationStyle;
+  
+  if (_scanningAnimationStyle == ScanningAnimationStyleGrid) {
+    
+    NSString *bundlePath = [[NSBundle bundleForClass:[self class]].resourcePath
+                            stringByAppendingPathComponent:@"/KYQRCode.bundle"];
+    NSBundle *resource_bundle = [NSBundle bundleWithPath:bundlePath];
+    _scanningImage = [UIImage imageNamed:@"QRCodeScanningLineGrid"
+                                inBundle:resource_bundle
+           compatibleWithTraitCollection:nil];
+    
+  }else{
+    NSString *bundlePath = [[NSBundle bundleForClass:[self class]].resourcePath
+                            stringByAppendingPathComponent:@"/KYQRCode.bundle"];
+    NSBundle *resource_bundle = [NSBundle bundleWithPath:bundlePath];
+    _scanningImage = [UIImage imageNamed:@"QRCodeScanningLineGrid"
+                                inBundle:resource_bundle
+           compatibleWithTraitCollection:nil];
+  }
 }
 
-- (void)setScanningImageName:(NSString *)scanningImageName {
-    _scanningImageName = scanningImageName;
+- (void)setScanningImage:(UIImage *)scanningImage {
+  
+    _scanningImage = scanningImage;
 }
 
 - (void)setBorderColor:(UIColor *)borderColor {

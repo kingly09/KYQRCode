@@ -70,6 +70,7 @@
   [self.view addSubview:self.promptLabel];
   /// 为了 UI 效果
   [self.view addSubview:self.bottomView];
+  [self.view addSubview:self.flashlightBtn];
 }
 
 - (void)setupNavigationBar {
@@ -138,7 +139,18 @@
   NSLog(@"metadataObjects - - %@", metadataObjects);
   if (metadataObjects != nil && metadataObjects.count > 0) {
     
-    NSString *audioFilePath = [[NSBundle mainBundle] pathForResource:@"sound.caf" ofType:nil];
+
+//    NSArray *allBun = [NSBundle allBundles];
+//    //当前App所有库
+//    NSArray *allFrame = [NSBundle allFrameworks];
+//    
+//    NSString *bundlePath = [[NSBundle bundleForClass:[scanManager class]].resourcePath
+//                            stringByAppendingPathComponent:@"/KYQRCode.bundle"];
+//    NSBundle *resource_bundle = [NSBundle bundleWithPath:bundlePath];
+//    
+//    NSLog(@"resource_bundle::%@",resource_bundle);
+//    
+     NSString *audioFilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/sound.caf"];
     
     [scanManager playSoundNameWithAudioFilePath:audioFilePath];
     [scanManager stopRunning];

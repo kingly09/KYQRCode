@@ -203,7 +203,7 @@
 - (KYQRCodeScanningView *)scanningView {
   if (!_scanningView) {
     _scanningView = [[KYQRCodeScanningView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    _scanningView.scanningImageName = @"KYQRCode.bundle/QRCodeScanningLineGrid";
+
     _scanningView.scanningAnimationStyle = ScanningAnimationStyleGrid;
     _scanningView.cornerColor = [UIColor orangeColor];
   }

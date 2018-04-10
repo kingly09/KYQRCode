@@ -54,6 +54,7 @@
  */
 - (IBAction)onClickQRCodeScanning:(id)sender {
   
+ 
   if ([KYQRCodeScanManager checkMediaTypeVideo] == NO) {
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
@@ -82,7 +83,7 @@
     return;
   }
   
-  KYQRCodeScanningViewController *VC = [[KYQRCodeScanningViewController alloc] init];
+  KYGridQRCodeScanningViewController *VC = [[KYGridQRCodeScanningViewController alloc] init];
   [self.navigationController pushViewController:VC animated:YES];
   
 }
@@ -119,8 +120,9 @@
     return;
   }
   
-  KYGridQRCodeScanningViewController *VC = [[KYGridQRCodeScanningViewController alloc] init];
+  KYQRCodeScanningViewController *VC = [[KYQRCodeScanningViewController alloc] init];
   [self.navigationController pushViewController:VC animated:YES];
+  
 }
 /**
  生成普通二维码

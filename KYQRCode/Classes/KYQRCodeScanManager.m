@@ -125,6 +125,7 @@ static KYQRCodeScanManager *_instance;
 
 #pragma mark - - - AVCaptureMetadataOutputObjectsDelegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
+  
     if (self.delegate && [self.delegate respondsToSelector:@selector(QRCodeScanManager:didOutputMetadataObjects:)]) {
         [self.delegate QRCodeScanManager:self didOutputMetadataObjects:metadataObjects];
     }
