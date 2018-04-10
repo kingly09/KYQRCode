@@ -1,10 +1,9 @@
 //
-//  main.m
-//  KYQRCode
-//
+//  KYWebViewController.h
+//  KYQRCode_Example
 //
 //  Created by kingly on 2018/4/10.
-//  Copyright © 2018年 KYQRCode Software https://github.com/kingly09/KYQRCode  by kingly inc.
+//  Copyright © 2018年 KYQRCode Software https://github.com/kingly09/KYQRCode  by kingly inc.  
 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,12 +25,8 @@
 // THE SOFTWARE. All rights reserved.
 //
 
-@import UIKit;
-#import "KYAppDelegate.h"
+#import <UIKit/UIKit.h>
 
-int main(int argc, char * argv[])
-{
-    @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([KYAppDelegate class]));
-    }
-}
+@interface KYWebViewController : UIViewController
+
+@end

@@ -24,6 +24,8 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		7EBA27CF9C35998D80B72C4B /* Pods_KYQRCode_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284FF31466BA1250BD6D5CAB /* Pods_KYQRCode_Tests.framework */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		BC023982207C60440035A11B /* KYtestg.m in Sources */ = {isa = PBXBuildFile; fileRef = BC023981207C60440035A11B /* KYtestg.m */; };
+		BC023985207C60920035A11B /* KYWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC023984207C60920035A11B /* KYWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +67,10 @@
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		95FA66583BF232FDEE40DD8F /* Pods_KYQRCode_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KYQRCode_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A040C9F7D867A62494D5C2B1 /* KYQRCode.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = KYQRCode.podspec; path = ../KYQRCode.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BC023980207C60440035A11B /* KYtestg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KYtestg.h; path = KYQRCode/KYtestg.h; sourceTree = "<group>"; };
+		BC023981207C60440035A11B /* KYtestg.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = KYtestg.m; path = KYQRCode/KYtestg.m; sourceTree = "<group>"; };
+		BC023983207C60920035A11B /* KYWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KYWebViewController.h; path = KYQRCode/KYWebViewController.h; sourceTree = "<group>"; };
+		BC023984207C60920035A11B /* KYWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = KYWebViewController.m; path = KYQRCode/KYWebViewController.m; sourceTree = "<group>"; };
 		DE26246A27F6E5363DDD23B7 /* Pods-KYQRCode_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KYQRCode_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KYQRCode_Tests/Pods-KYQRCode_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		ED73CFC5CC21740BE7A8A44E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,6 +104,10 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				BC023983207C60920035A11B /* KYWebViewController.h */,
+				BC023984207C60920035A11B /* KYWebViewController.m */,
+				BC023980207C60440035A11B /* KYtestg.h */,
+				BC023981207C60440035A11B /* KYtestg.m */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* Example for KYQRCode */,
 				6003F5B5195388D20070C39A /* Tests */,
@@ -248,7 +258,7 @@
 			attributes = {
 				CLASSPREFIX = KY;
 				LastUpgradeCheck = 0720;
-				ORGANIZATIONNAME = kingly09;
+				ORGANIZATIONNAME = "KYQRCode Software https://github.com/kingly09/KYQRCode  by kingly inc.  \n\n//\n// Permission is hereby granted, free of charge, to any person obtaining a copy\n// of this software and associated documentation files (the \"Software\"), to deal\n// in the Software without restriction, including without limitation the rights\n// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n// copies of the Software, and to permit persons to whom the Software is\n// furnished to do so, subject to the following conditions:\n//\n// The above copyright notice and this permission notice shall be included in\n// all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n// THE SOFTWARE.";
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
 						DevelopmentTeam = KE5MJRYE2S;
@@ -406,9 +416,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC023985207C60920035A11B /* KYWebViewController.m in Sources */,
 				6003F59E195388D20070C39A /* KYAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* KYViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				BC023982207C60440035A11B /* KYtestg.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

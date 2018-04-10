@@ -1,10 +1,9 @@
 //
-//  main.m
-//  KYQRCode
-//
+//  KYWebViewController.m
+//  KYQRCode_Example
 //
 //  Created by kingly on 2018/4/10.
-//  Copyright © 2018年 KYQRCode Software https://github.com/kingly09/KYQRCode  by kingly inc.
+//  Copyright © 2018年 KYQRCode Software https://github.com/kingly09/KYQRCode  by kingly inc.  
 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,12 +25,32 @@
 // THE SOFTWARE. All rights reserved.
 //
 
-@import UIKit;
-#import "KYAppDelegate.h"
+#import "KYWebViewController.h"
 
-int main(int argc, char * argv[])
-{
-    @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([KYAppDelegate class]));
-    }
+@interface KYWebViewController ()
+
+@end
+
+@implementation KYWebViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end
