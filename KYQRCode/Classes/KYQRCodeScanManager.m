@@ -166,10 +166,21 @@ static KYQRCodeScanManager *_instance;
     [_videoDataOutput setSampleBufferDelegate:nil queue:dispatch_get_main_queue()];
 }
 
-- (void)playSoundName:(NSString *)name {
-    NSString *audioFile = [[NSBundle mainBundle] pathForResource:name ofType:nil];
-    NSURL *fileUrl = [NSURL fileURLWithPath:audioFile];
-    
+- (void)playSoundNameWithAudioFilePath:(NSString *)audioFilePath {
+ 
+  if (audioFilePath == nil) {
+    NSLog(@"该音频文件路径有错误");
+    return;
+  }
+  
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  if (![fileManager fileExistsAtPath:audioFilePath])
+  {
+    NSLog(@"该音频文件路径不存在");
+    return;
+  }
+
+   NSURL *fileUrl = [NSURL fileURLWithPath:audioFilePath];
     SystemSoundID soundID = 0;
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)(fileUrl), &soundID);
     AudioServicesAddSystemSoundCompletion(soundID, NULL, NULL, soundCompleteCallback, NULL);

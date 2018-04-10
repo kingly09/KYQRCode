@@ -54,7 +54,7 @@
 }
 
 - (void)dealloc {
-  NSLog(@"WCQRCodeScanningVC - dealloc");
+  NSLog(@"KYGridQRCodeScanningViewController - dealloc");
   [self removeScanningView];
 }
 
@@ -137,7 +137,10 @@
 - (void)QRCodeScanManager:(KYQRCodeScanManager *)scanManager didOutputMetadataObjects:(NSArray *)metadataObjects {
   NSLog(@"metadataObjects - - %@", metadataObjects);
   if (metadataObjects != nil && metadataObjects.count > 0) {
-    [scanManager playSoundName:@"KYQRCode.bundle/sound.caf"];
+    
+    NSString *audioFilePath = [[NSBundle mainBundle] pathForResource:@"sound.caf" ofType:nil];
+    
+    [scanManager playSoundNameWithAudioFilePath:audioFilePath];
     [scanManager stopRunning];
     [scanManager videoPreviewLayerRemoveFromSuperlayer];
     
