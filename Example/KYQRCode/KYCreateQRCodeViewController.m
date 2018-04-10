@@ -1,8 +1,9 @@
-//  KYQRCode
 //
+//  KYCreateQRCodeViewController.m
+//  KYQRCode_Example
 //
 //  Created by kingly on 2018/4/10.
-//  Copyright © 2018年 KYQRCode Software https://github.com/kingly09/KYQRCode  by kingly inc.
+//  Copyright © 2018年 KYQRCode Software https://github.com/kingly09/KYQRCode  by kingly inc.  
 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,13 +25,32 @@
 // THE SOFTWARE. All rights reserved.
 //
 
+#import "KYCreateQRCodeViewController.h"
 
-#import <Foundation/Foundation.h>
+@interface KYCreateQRCodeViewController ()
 
-@interface KYQRCodeHelperTool : NSObject
-/** 打开手电筒 */
-+ (void)KY_openFlashlight;
-/** 关闭手电筒 */
-+ (void)KY_CloseFlashlight;
+@end
+
+@implementation KYCreateQRCodeViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

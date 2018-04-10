@@ -24,6 +24,7 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		7EBA27CF9C35998D80B72C4B /* Pods_KYQRCode_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284FF31466BA1250BD6D5CAB /* Pods_KYQRCode_Tests.framework */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		BC023988207C6B150035A11B /* KYCreateQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC023987207C6B150035A11B /* KYCreateQRCodeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		95FA66583BF232FDEE40DD8F /* Pods_KYQRCode_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KYQRCode_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A040C9F7D867A62494D5C2B1 /* KYQRCode.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = KYQRCode.podspec; path = ../KYQRCode.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BC023986207C6B150035A11B /* KYCreateQRCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KYCreateQRCodeViewController.h; sourceTree = "<group>"; };
+		BC023987207C6B150035A11B /* KYCreateQRCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYCreateQRCodeViewController.m; sourceTree = "<group>"; };
 		DE26246A27F6E5363DDD23B7 /* Pods-KYQRCode_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KYQRCode_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KYQRCode_Tests/Pods-KYQRCode_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		ED73CFC5CC21740BE7A8A44E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,6 +143,8 @@
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
+				BC023986207C6B150035A11B /* KYCreateQRCodeViewController.h */,
+				BC023987207C6B150035A11B /* KYCreateQRCodeViewController.m */,
 			);
 			name = "Example for KYQRCode";
 			path = KYQRCode;
@@ -408,6 +413,7 @@
 			files = (
 				6003F59E195388D20070C39A /* KYAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* KYViewController.m in Sources */,
+				BC023988207C6B150035A11B /* KYCreateQRCodeViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'KYQRCode/Classes/**/*'
-  
+  s.resource     = 'KYQRCode/Assets/**/*'
   # s.resource_bundles = {
   #   'KYQRCode' => ['KYQRCode/Assets/*.png']
   # }

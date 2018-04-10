@@ -1,8 +1,9 @@
-//  KYQRCode
 //
+//  KYCreateQRCodeViewController.h
+//  KYQRCode_Example
 //
 //  Created by kingly on 2018/4/10.
-//  Copyright © 2018年 KYQRCode Software https://github.com/kingly09/KYQRCode  by kingly inc.
+//  Copyright © 2018年 KYQRCode Software https://github.com/kingly09/KYQRCode  by kingly inc.  
 
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,13 +25,8 @@
 // THE SOFTWARE. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 
-#import <Foundation/Foundation.h>
-
-@interface KYQRCodeHelperTool : NSObject
-/** 打开手电筒 */
-+ (void)KY_openFlashlight;
-/** 关闭手电筒 */
-+ (void)KY_CloseFlashlight;
+@interface KYCreateQRCodeViewController : UIViewController
 
 @end

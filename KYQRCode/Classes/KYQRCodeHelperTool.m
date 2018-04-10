@@ -30,7 +30,7 @@
 
 @implementation KYQRCodeHelperTool
 /** 打开手电筒 */
-+ (void)SG_openFlashlight {
++ (void)KY_openFlashlight {
     AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     NSError *error = nil;
     if ([captureDevice hasTorch]) {
@@ -42,7 +42,7 @@
     }
 }
 /** 关闭手电筒 */
-+ (void)SG_CloseFlashlight {
++ (void)KY_CloseFlashlight {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     if ([device hasTorch]) {
         [device lockForConfiguration:nil];
