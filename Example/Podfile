@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'KYQRCode_Example' do
+  pod 'KYQRCode', :path => '../'
+
+  target 'KYQRCode_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
