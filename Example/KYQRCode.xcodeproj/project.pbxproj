@@ -25,6 +25,8 @@
 		7EBA27CF9C35998D80B72C4B /* Pods_KYQRCode_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284FF31466BA1250BD6D5CAB /* Pods_KYQRCode_Tests.framework */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		BC023988207C6B150035A11B /* KYCreateQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC023987207C6B150035A11B /* KYCreateQRCodeViewController.m */; };
+		BC02398B207C6B710035A11B /* KYQRCodeScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC02398A207C6B710035A11B /* KYQRCodeScanningViewController.m */; };
+		BC02398E207C6BCC0035A11B /* KYGridQRCodeScanningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC02398D207C6BCC0035A11B /* KYGridQRCodeScanningViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +70,10 @@
 		A040C9F7D867A62494D5C2B1 /* KYQRCode.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = KYQRCode.podspec; path = ../KYQRCode.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BC023986207C6B150035A11B /* KYCreateQRCodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KYCreateQRCodeViewController.h; sourceTree = "<group>"; };
 		BC023987207C6B150035A11B /* KYCreateQRCodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYCreateQRCodeViewController.m; sourceTree = "<group>"; };
+		BC023989207C6B710035A11B /* KYQRCodeScanningViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KYQRCodeScanningViewController.h; sourceTree = "<group>"; };
+		BC02398A207C6B710035A11B /* KYQRCodeScanningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYQRCodeScanningViewController.m; sourceTree = "<group>"; };
+		BC02398C207C6BCC0035A11B /* KYGridQRCodeScanningViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KYGridQRCodeScanningViewController.h; sourceTree = "<group>"; };
+		BC02398D207C6BCC0035A11B /* KYGridQRCodeScanningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYGridQRCodeScanningViewController.m; sourceTree = "<group>"; };
 		DE26246A27F6E5363DDD23B7 /* Pods-KYQRCode_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KYQRCode_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KYQRCode_Tests/Pods-KYQRCode_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		ED73CFC5CC21740BE7A8A44E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -145,6 +151,10 @@
 				6003F594195388D20070C39A /* Supporting Files */,
 				BC023986207C6B150035A11B /* KYCreateQRCodeViewController.h */,
 				BC023987207C6B150035A11B /* KYCreateQRCodeViewController.m */,
+				BC023989207C6B710035A11B /* KYQRCodeScanningViewController.h */,
+				BC02398A207C6B710035A11B /* KYQRCodeScanningViewController.m */,
+				BC02398C207C6BCC0035A11B /* KYGridQRCodeScanningViewController.h */,
+				BC02398D207C6BCC0035A11B /* KYGridQRCodeScanningViewController.m */,
 			);
 			name = "Example for KYQRCode";
 			path = KYQRCode;
@@ -411,10 +421,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC02398B207C6B710035A11B /* KYQRCodeScanningViewController.m in Sources */,
 				6003F59E195388D20070C39A /* KYAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* KYViewController.m in Sources */,
 				BC023988207C6B150035A11B /* KYCreateQRCodeViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				BC02398E207C6BCC0035A11B /* KYGridQRCodeScanningViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

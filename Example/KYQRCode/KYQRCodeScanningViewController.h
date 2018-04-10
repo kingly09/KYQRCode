@@ -1,5 +1,5 @@
 //
-//  KYCreateQRCodeViewController.h
+//  KYQRCodeScanningViewController.h
 //  KYQRCode_Example
 //
 //  Created by kingly on 2018/4/10.
@@ -28,8 +28,8 @@
 #import <UIKit/UIKit.h>
 
 /**
- 生成二维码
+ 扫一扫二维码
  */
-@interface KYCreateQRCodeViewController : UIViewController
+@interface KYQRCodeScanningViewController : UIViewController
 
 @end
