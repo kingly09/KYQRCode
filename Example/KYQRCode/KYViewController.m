@@ -7,6 +7,7 @@
 //
 
 #import "KYViewController.h"
+#import <KYQRCode/KYQRCode.h>
 
 @interface KYViewController ()
 
