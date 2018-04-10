@@ -28,6 +28,8 @@
 #import "KYViewController.h"
 #import <KYQRCode/KYQRCode.h>
 #import "KYCreateQRCodeViewController.h"
+#import "KYQRCodeScanningViewController.h"
+#import "KYGridQRCodeScanningViewController.h"
 
 @interface KYViewController ()
 
@@ -51,11 +53,74 @@
  扫一扫二维码
  */
 - (IBAction)onClickQRCodeScanning:(id)sender {
+  
+  if ([KYQRCodeScanManager checkMediaTypeVideo] == NO) {
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                    message:@"该设备没有打开摄像头"
+                                                   delegate:self
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil,nil];
+    [alert show];
+    
+    return;
+  }
+  
+  if ([KYQRCodeScanManager checkAuthority] == NO) {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请前往“设置-隐私-相机”找到KYQRCode并打开相机访问权限" preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+      
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+      
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=Privacy&path=CAMERA"]];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    return;
+  }
+  
+  KYQRCodeScanningViewController *VC = [[KYQRCodeScanningViewController alloc] init];
+  [self.navigationController pushViewController:VC animated:YES];
+  
 }
 /**
  扫一扫二维码（网格状）
  */
 - (IBAction)onClickQRCodeScanningWG:(id)sender {
+  
+  if ([KYQRCodeScanManager checkMediaTypeVideo] == NO) {
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                    message:@"该设备没有打开摄像头"
+                                                   delegate:self
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil,nil];
+    [alert show];
+    
+    return;
+  }
+  
+  if ([KYQRCodeScanManager checkAuthority] == NO) {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请前往“设置-隐私-相机”找到KYQRCode并打开相机访问权限" preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+      
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+      
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=Privacy&path=CAMERA"]];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    return;
+  }
+  
+  KYGridQRCodeScanningViewController *VC = [[KYGridQRCodeScanningViewController alloc] init];
+  [self.navigationController pushViewController:VC animated:YES];
 }
 /**
  生成普通二维码

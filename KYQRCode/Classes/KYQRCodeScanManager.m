@@ -180,5 +180,29 @@ void soundCompleteCallback(SystemSoundID soundID, void *clientData){
 }
 
 
+/** 
+该设备没有打开摄像头
+ */
++(BOOL)checkMediaTypeVideo {
+  
+  AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+  if (device==nil) {
+    return NO;
+  }
+  return YES;
+}
+/*
+ 检查是否有相机权限/该设备没有打开摄像头
+ */
++ (BOOL)checkAuthority
+{
+  NSString *mediaType = AVMediaTypeVideo;
+  AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
+  if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied){
+    return NO;
+  }
+  return YES;
+}
+
 @end
 

@@ -53,6 +53,11 @@
  *  @param currentController      KYQRCodeScanManager 所在控制器
  */
 - (void)setupSessionPreset:(NSString *)sessionPreset metadataObjectTypes:(NSArray *)metadataObjectTypes currentController:(UIViewController *)currentController;
+
+//该设备没有打开摄像头
++(BOOL)checkMediaTypeVideo;
+//检查是否有相机权限
++ (BOOL)checkAuthority;
 /** 开启会话对象扫描 */
 - (void)startRunning;
 /** 停止会话对象扫描 */
