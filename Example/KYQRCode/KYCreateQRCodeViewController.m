@@ -26,6 +26,7 @@
 //
 
 #import "KYCreateQRCodeViewController.h"
+#import <KYQRCode/KYQRCode.h>
 
 @interface KYCreateQRCodeViewController ()
 
@@ -36,6 +37,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor colorWithWhite:0.87 alpha:1.0];
+  
+    if ([self.title isEqualToString:@"生成普通二维码"]) {
+      [self setupGenerateQRCode];
+    }else if ([self.title isEqualToString:@"生成带logo的二维码"]) {
+      [self setupGenerate_Icon_QRCode];
+    }else if ([self.title isEqualToString:@"生成带色彩的二维码"]) {
+      [self setupGenerate_Color_QRCode];
+    }else{
+      self.title = @"生成普通二维码";
+      [self setupGenerateQRCode];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,14 +56,76 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+// 生成二维码
+- (void)setupGenerateQRCode {
+  
+  // 1、借助UIImageView显示二维码
+  UIImageView *imageView = [[UIImageView alloc] init];
+  CGFloat imageViewW = 150;
+  CGFloat imageViewH = imageViewW;
+  CGFloat imageViewX = (self.view.frame.size.width - imageViewW) / 2;
+  CGFloat imageViewY = 100;
+  imageView.frame =CGRectMake(imageViewX, imageViewY, imageViewW, imageViewH);
+  [self.view addSubview:imageView];
+  
+  // 2、将CIImage转换成UIImage，并放大显示
+  imageView.image = [KYQRCodeGenerateManager generateWithDefaultQRCodeData:@"https://github.com/kingly09" imageViewWidth:imageViewW];
+  
+#pragma mark - - - 模仿支付宝二维码样式（添加用户头像）
+  CGFloat scale = 0.22;
+  CGFloat borderW = 5;
+  UIView *borderView = [[UIView alloc] init];
+  CGFloat borderViewW = imageViewW * scale;
+  CGFloat borderViewH = imageViewH * scale;
+  CGFloat borderViewX = 0.5 * (imageViewW - borderViewW);
+  CGFloat borderViewY = 0.5 * (imageViewH - borderViewH);
+  borderView.frame = CGRectMake(borderViewX, borderViewY, borderViewW, borderViewH);
+  borderView.layer.borderWidth = borderW;
+  borderView.layer.borderColor = [UIColor purpleColor].CGColor;
+  borderView.layer.cornerRadius = 10;
+  borderView.layer.masksToBounds = YES;
+  borderView.layer.contents = (id)[UIImage imageNamed:@"icon60x60"].CGImage;
+  
 }
-*/
+
+
+#pragma mark  - 中间带有图标二维码生成
+
+- (void)setupGenerate_Icon_QRCode {
+  
+  // 1、借助UIImageView显示二维码
+  UIImageView *imageView = [[UIImageView alloc] init];
+  CGFloat imageViewW = 150;
+  CGFloat imageViewH = imageViewW;
+  CGFloat imageViewX = (self.view.frame.size.width - imageViewW) / 2;
+  CGFloat imageViewY = 240;
+  imageView.frame =CGRectMake(imageViewX, imageViewY, imageViewW, imageViewH);
+  [self.view addSubview:imageView];
+  
+  CGFloat scale = 0.2;
+  
+  // 2、将最终合得的图片显示在UIImageView上
+  imageView.image = [KYQRCodeGenerateManager generateWithLogoQRCodeData:@"https://github.com/kingly09/KYQRCode.git" logoImageName:@"icon60x60" logoScaleToSuperView:scale];
+  
+}
+
+#pragma mark  - 彩色图标二维码生成
+- (void)setupGenerate_Color_QRCode {
+  
+  // 1、借助UIImageView显示二维码
+  UIImageView *imageView = [[UIImageView alloc] init];
+  CGFloat imageViewW = 150;
+  CGFloat imageViewH = imageViewW;
+  CGFloat imageViewX = (self.view.frame.size.width - imageViewW) / 2;
+  CGFloat imageViewY = 400;
+  imageView.frame =CGRectMake(imageViewX, imageViewY, imageViewW, imageViewH);
+  [self.view addSubview:imageView];
+  
+  // 2、将二维码显示在UIImageView上
+  imageView.image = [KYQRCodeGenerateManager generateWithColorQRCodeData:@"hhttps://github.com/kingly09/KYQRCode.git" backgroundColor:[CIColor colorWithRed:1 green:0 blue:0.8] mainColor:[CIColor colorWithRed:0.3 green:0.2 blue:0.4]];
+}
+
+
 
 @end

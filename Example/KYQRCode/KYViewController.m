@@ -27,6 +27,7 @@
 
 #import "KYViewController.h"
 #import <KYQRCode/KYQRCode.h>
+#import "KYCreateQRCodeViewController.h"
 
 @interface KYViewController ()
 
@@ -60,16 +61,31 @@
  生成普通二维码
  */
 - (IBAction)onClickCreateQR:(id)sender {
+  
+  KYCreateQRCodeViewController *VC = [[KYCreateQRCodeViewController alloc] init];
+  VC.title = @"生成普通二维码";
+  [self.navigationController pushViewController:VC animated:YES];
+  
 }
 /**
  生成带logo的二维码
  */
 - (IBAction)onClickCreateQRWithLogo:(id)sender {
+  KYCreateQRCodeViewController *VC = [[KYCreateQRCodeViewController alloc] init];
+  VC.title = @"生成带logo的二维码";
+  [self.navigationController pushViewController:VC animated:YES];
 }
 /**
  生成带色彩的二维码
  */
 - (IBAction)onClickCreateQRWithColor:(id)sender {
+  
+  KYCreateQRCodeViewController *VC = [[KYCreateQRCodeViewController alloc] init];
+  VC.title = @"生成带色彩的二维码";
+  [self.navigationController pushViewController:VC animated:YES];
+  
 }
+
+
 
 @end
