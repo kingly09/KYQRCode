@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KYQRCode'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.summary          = 'KYQRCode 是一个基于Objective-C封装的二维码扫描条形码/识别生成二维码框架 .'
 
 # This description is used to generate tags and improve search results.
