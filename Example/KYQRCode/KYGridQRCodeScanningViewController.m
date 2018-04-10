@@ -88,6 +88,9 @@
   [self.scanningView removeTimer];
   [self.scanningView removeFromSuperview];
   self.scanningView = nil;
+  [_manager cancelSampleBufferDelegate];
+  _manager = nil;
+  
 }
 
 - (void)rightBarButtonItenAction {
@@ -106,6 +109,11 @@
   // AVCaptureSessionPreset1920x1080 推荐使用，对于小型的二维码读取率较高
   [_manager setupSessionPreset:AVCaptureSessionPreset1920x1080 metadataObjectTypes:arr currentController:self];
   _manager.delegate = self;
+  
+  // 自定义播放音频
+  NSString *audioFilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/sound.caf"];
+  _manager.currAudioFilePath = audioFilePath;
+  
 }
 
 #pragma mark  - KYQRCodeAlbumManagerDelegate
@@ -139,20 +147,6 @@
   NSLog(@"metadataObjects - - %@", metadataObjects);
   if (metadataObjects != nil && metadataObjects.count > 0) {
     
-
-//    NSArray *allBun = [NSBundle allBundles];
-//    //当前App所有库
-//    NSArray *allFrame = [NSBundle allFrameworks];
-//    
-//    NSString *bundlePath = [[NSBundle bundleForClass:[scanManager class]].resourcePath
-//                            stringByAppendingPathComponent:@"/KYQRCode.bundle"];
-//    NSBundle *resource_bundle = [NSBundle bundleWithPath:bundlePath];
-//    
-//    NSLog(@"resource_bundle::%@",resource_bundle);
-//    
-     NSString *audioFilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/sound.caf"];
-    
-    [scanManager playSoundNameWithAudioFilePath:audioFilePath];
     [scanManager stopRunning];
     [scanManager videoPreviewLayerRemoveFromSuperlayer];
     

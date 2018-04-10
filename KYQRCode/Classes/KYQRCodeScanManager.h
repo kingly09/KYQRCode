@@ -44,7 +44,7 @@
 + (instancetype)sharedManager;
 /**  KYQRCodeScanManagerDelegate */
 @property (nonatomic, weak) id<KYQRCodeScanManagerDelegate> delegate;
-
+@property (nonatomic,copy) NSString *currAudioFilePath; //自定义音频路径
 /**
  *  创建扫描二维码会话对象以及会话采集数据类型和扫码支持的编码格式的设置，必须实现的方法
  *

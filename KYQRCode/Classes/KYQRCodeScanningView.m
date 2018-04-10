@@ -38,6 +38,7 @@
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) UIImageView *scanningline;
+
 @end
 
 @implementation KYQRCodeScanningView

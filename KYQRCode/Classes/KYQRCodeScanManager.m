@@ -31,6 +31,9 @@
 @property (nonatomic, strong) AVCaptureSession *session;
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoDataOutput;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
+
+
+
 @end
 
 @implementation KYQRCodeScanManager
@@ -126,9 +129,20 @@ static KYQRCodeScanManager *_instance;
 #pragma mark - - - AVCaptureMetadataOutputObjectsDelegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
   
-    if (self.delegate && [self.delegate respondsToSelector:@selector(QRCodeScanManager:didOutputMetadataObjects:)]) {
-        [self.delegate QRCodeScanManager:self didOutputMetadataObjects:metadataObjects];
-    }
+  if (_currAudioFilePath.length > 0) {
+    
+    [self playSoundNameWithAudioFilePath:_currAudioFilePath];
+    
+  }else{
+    
+    NSString *bundlePath = [[NSBundle bundleForClass:[self class]].resourcePath
+                            stringByAppendingPathComponent:@"/KYQRCode.bundle"];
+    [self playSoundNameWithAudioFilePath:[NSString stringWithFormat:@"%@/sound.caf",bundlePath]];
+  }
+  
+  if (self.delegate && [self.delegate respondsToSelector:@selector(QRCodeScanManager:didOutputMetadataObjects:)]) {
+    [self.delegate QRCodeScanManager:self didOutputMetadataObjects:metadataObjects];
+  }
 }
 
 #pragma mark - - - AVCaptureVideoDataOutputSampleBufferDelegate的方法
@@ -180,7 +194,7 @@ static KYQRCodeScanManager *_instance;
     NSLog(@"该音频文件路径不存在");
     return;
   }
-
+  
    NSURL *fileUrl = [NSURL fileURLWithPath:audioFilePath];
     SystemSoundID soundID = 0;
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)(fileUrl), &soundID);

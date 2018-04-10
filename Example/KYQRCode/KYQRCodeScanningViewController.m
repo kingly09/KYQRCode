@@ -85,6 +85,10 @@
   [self.scanningView removeTimer];
   [self.scanningView removeFromSuperview];
   self.scanningView = nil;
+
+  [_manager cancelSampleBufferDelegate];
+  _manager = nil;
+  
 }
 
 
@@ -103,6 +107,8 @@
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
   [self.scanningView removeTimer];
+  
+  
 }
 
 - (void)dealloc {
