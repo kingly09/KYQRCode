@@ -46,4 +46,30 @@
     // Dispose of any resources that can be recreated.
 }
 
+/**
+ 扫一扫二维码
+ */
+- (IBAction)onClickQRCodeScanning:(id)sender {
+}
+/**
+ 扫一扫二维码（网格状）
+ */
+- (IBAction)onClickQRCodeScanningWG:(id)sender {
+}
+/**
+ 生成普通二维码
+ */
+- (IBAction)onClickCreateQR:(id)sender {
+}
+/**
+ 生成带logo的二维码
+ */
+- (IBAction)onClickCreateQRWithLogo:(id)sender {
+}
+/**
+ 生成带色彩的二维码
+ */
+- (IBAction)onClickCreateQRWithColor:(id)sender {
+}
+
 @end
