@@ -128,6 +128,7 @@ static KYQRCodeScanManager *_instance;
     // 7、设置数据输出类型，需要将数据输出添加到会话后，才能指定元数据类型，否则会报错
     // 设置扫码支持的编码格式(如下设置条形码和二维码兼容)
     // @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code,  AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code]
+   //如果没有设置的编码格式，设置扫码支持的编码格式，那么默认设置默认支持
    if (metadataObjectTypes.count == 0) {
      metadataObjectTypes = [self defaultMetaDataObjectTypes];
     }
