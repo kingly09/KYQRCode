@@ -77,10 +77,29 @@ static KYQRCodeScanManager *_instance;
     // 1、获取摄像设备
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
-    // 2、创建摄像设备输入流
-    AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
-    
-    // 3、创建元数据输出流
+  // 2、创建摄像设备输入流
+  AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
+  
+  //添加自动白平衡，自动对焦功能，自动曝光
+  [deviceInput.device lockForConfiguration:nil];
+  //自动白平衡
+  if ([device isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance])
+  {
+    [deviceInput.device setWhiteBalanceMode:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance];
+  }
+  //先进行判断是否支持控制对焦,不开启自动对焦功能，很难识别二维码。
+  if (device.isFocusPointOfInterestSupported &&[device isFocusModeSupported:AVCaptureFocusModeAutoFocus])
+  {
+    [deviceInput.device setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+  }
+  //自动曝光
+  if ([device isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure])
+  {
+    [deviceInput.device setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
+  }
+  [deviceInput.device unlockForConfiguration];
+  
+  // 3、创建元数据输出流
     AVCaptureMetadataOutput *metadataOutput = [[AVCaptureMetadataOutput alloc] init];
     [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
     
@@ -110,6 +129,8 @@ static KYQRCodeScanManager *_instance;
     // 设置扫码支持的编码格式(如下设置条形码和二维码兼容)
     // @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code,  AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code]
     metadataOutput.metadataObjectTypes = metadataObjectTypes;
+  
+  
     
     // 8、实例化预览图层, 传递_session是为了告诉图层将来显示什么内容
     _videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
