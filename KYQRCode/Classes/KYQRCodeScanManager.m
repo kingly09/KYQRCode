@@ -128,6 +128,9 @@ static KYQRCodeScanManager *_instance;
     // 7、设置数据输出类型，需要将数据输出添加到会话后，才能指定元数据类型，否则会报错
     // 设置扫码支持的编码格式(如下设置条形码和二维码兼容)
     // @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code,  AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code]
+   if (metadataObjectTypes.count == 0) {
+     metadataObjectTypes = [self defaultMetaDataObjectTypes];
+    }
     metadataOutput.metadataObjectTypes = metadataObjectTypes;
   
   
@@ -145,6 +148,36 @@ static KYQRCodeScanManager *_instance;
     
     // 9、启动会话
     [_session startRunning];
+}
+
+
+/**
+ @brief  默认支持码的类别
+ @return 支持类别 数组
+ */
+- (NSArray *)defaultMetaDataObjectTypes
+{
+  NSMutableArray *types = [@[AVMetadataObjectTypeQRCode,
+                             AVMetadataObjectTypeUPCECode,
+                             AVMetadataObjectTypeCode39Code,
+                             AVMetadataObjectTypeCode39Mod43Code,
+                             AVMetadataObjectTypeEAN13Code,
+                             AVMetadataObjectTypeEAN8Code,
+                             AVMetadataObjectTypeCode93Code,
+                             AVMetadataObjectTypeCode128Code,
+                             AVMetadataObjectTypePDF417Code,
+                             AVMetadataObjectTypeAztecCode] mutableCopy];
+  
+  if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_8_0)
+  {
+    [types addObjectsFromArray:@[
+                                 AVMetadataObjectTypeInterleaved2of5Code,
+                                 AVMetadataObjectTypeITF14Code,
+                                 AVMetadataObjectTypeDataMatrixCode
+                                 ]];
+  }
+  
+  return types;
 }
 
 #pragma mark - - - AVCaptureMetadataOutputObjectsDelegate
