@@ -30,9 +30,11 @@
 @interface KYQRCodeScanManager () <AVCaptureMetadataOutputObjectsDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
 @property (nonatomic, strong) AVCaptureSession *session;
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoDataOutput;
+@property (nonatomic, strong) AVCaptureDeviceInput *deviceInput;
+@property (nonatomic, strong)  AVCaptureDevice *device;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
 
-
+@property(nonatomic,strong)  AVCaptureStillImageOutput *stillImageOutput;//拍照
 
 @end
 
@@ -41,113 +43,142 @@
 static KYQRCodeScanManager *_instance;
 
 + (instancetype)sharedManager {
-    return [[self alloc] init];
+  return [[self alloc] init];
 }
 
 + (instancetype)allocWithZone:(struct _NSZone *)zone {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _instance = [super allocWithZone:zone];
-    });
-    return _instance;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    _instance = [super allocWithZone:zone];
+  });
+  return _instance;
 }
 
 -(id)copyWithZone:(NSZone *)zone {
-    return _instance;
+  return _instance;
 }
 
 -(id)mutableCopyWithZone:(NSZone *)zone {
-    return _instance;
+  return _instance;
 }
 
 - (void)setupSessionPreset:(NSString *)sessionPreset metadataObjectTypes:(NSArray *)metadataObjectTypes currentController:(UIViewController *)currentController {
-    
-    if (sessionPreset == nil) {
-        @throw [NSException exceptionWithName:@"KYQRCode" reason:@"setupSessionPreset:metadataObjectTypes:currentController: 方法中的 sessionPreset 参数不能为空" userInfo:nil];
-    }
-    
-    if (metadataObjectTypes == nil) {
-        @throw [NSException exceptionWithName:@"KYQRCode" reason:@"setupSessionPreset:metadataObjectTypes:currentController: 方法中的 metadataObjectTypes 参数不能为空" userInfo:nil];
-    }
-    
-    if (currentController == nil) {
-        @throw [NSException exceptionWithName:@"KYQRCode" reason:@"setupSessionPreset:metadataObjectTypes:currentController: 方法中的 currentController 参数不能为空" userInfo:nil];
-    }
-
-    // 1、获取摄像设备
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    
+  
+  if (sessionPreset == nil) {
+    @throw [NSException exceptionWithName:@"KYQRCode" reason:@"setupSessionPreset:metadataObjectTypes:currentController: 方法中的 sessionPreset 参数不能为空" userInfo:nil];
+  }
+  
+  if (metadataObjectTypes == nil) {
+    @throw [NSException exceptionWithName:@"KYQRCode" reason:@"setupSessionPreset:metadataObjectTypes:currentController: 方法中的 metadataObjectTypes 参数不能为空" userInfo:nil];
+  }
+  
+  if (currentController == nil) {
+    @throw [NSException exceptionWithName:@"KYQRCode" reason:@"setupSessionPreset:metadataObjectTypes:currentController: 方法中的 currentController 参数不能为空" userInfo:nil];
+  }
+  
+  // 1、获取摄像设备
+  _device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+  
   // 2、创建摄像设备输入流
-  AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
+  _deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:_device error:nil];
   
   //添加自动白平衡，自动对焦功能，自动曝光
-  [deviceInput.device lockForConfiguration:nil];
+  [_deviceInput.device lockForConfiguration:nil];
   //自动白平衡
-  if ([device isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance])
+  if ([_device isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance])
   {
-    [deviceInput.device setWhiteBalanceMode:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance];
+     NSLog(@"KYQRCode::AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance");
+    [_deviceInput.device setWhiteBalanceMode:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance];
   }
   //先进行判断是否支持控制对焦,不开启自动对焦功能，很难识别二维码。
-  if (device.isFocusPointOfInterestSupported &&[device isFocusModeSupported:AVCaptureFocusModeAutoFocus])
+  if (_device.isFocusPointOfInterestSupported &&[_device isFocusModeSupported:AVCaptureFocusModeAutoFocus])
   {
-    [deviceInput.device setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+    NSLog(@"KYQRCode::AVCaptureFocusModeContinuousAutoFocus");
+    [_deviceInput.device setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
   }
   //自动曝光
-  if ([device isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure])
+  if ([_device isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure])
   {
-    [deviceInput.device setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
+    NSLog(@"KYQRCode::AVCaptureExposureModeContinuousAutoExposure");
+    [_deviceInput.device setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
   }
-  [deviceInput.device unlockForConfiguration];
+  [_deviceInput.device unlockForConfiguration];
   
   // 3、创建元数据输出流
-    AVCaptureMetadataOutput *metadataOutput = [[AVCaptureMetadataOutput alloc] init];
-    [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-    
-    // 3(1)、创建摄像数据输出流
-    self.videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
-    [_videoDataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
-    
-    // 设置扫描范围（每一个取值0～1，以屏幕右上角为坐标原点）
-    // 注：微信二维码的扫描范围是整个屏幕，这里并没有做处理（可不用设置）;
-    // 如需限制扫描框范围，打开下一句注释代码并进行相应调整
-//    metadataOutput.rectOfInterest = CGRectMake(0.05, 0.2, 0.7, 0.6);
-    
-    // 4、创建会话对象
-    _session = [[AVCaptureSession alloc] init];
-    // 会话采集率: AVCaptureSessionPresetHigh
-    _session.sessionPreset = sessionPreset;
-    
-    // 5、添加元数据输出流到会话对象
+  AVCaptureMetadataOutput *metadataOutput = [[AVCaptureMetadataOutput alloc] init];
+  [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+  
+  // 3(1)、创建摄像数据输出流
+  self.videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
+  [_videoDataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
+  
+  // 设置扫描范围（每一个取值0～1，以屏幕右上角为坐标原点）
+  // 注：微信二维码的扫描范围是整个屏幕，这里并没有做处理（可不用设置）;
+  // 如需限制扫描框范围，打开下一句注释代码并进行相应调整
+  //    metadataOutput.rectOfInterest = CGRectMake(0.05, 0.2, 0.7, 0.6);
+  
+  // 3(2)、创建摄像数据输出流(格式)
+  _stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+  NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                  AVVideoCodecJPEG, AVVideoCodecKey,
+                                  nil];
+  [_stillImageOutput setOutputSettings:outputSettings];
+  
+  // 4、创建会话对象
+  _session = [[AVCaptureSession alloc] init];
+  // 会话采集率: AVCaptureSessionPresetHigh
+  _session.sessionPreset = sessionPreset;
+  
+  // 5、添加元数据输出流到会话对象
+  if ([_session canAddOutput:metadataOutput])
+  {
+    NSLog(@"session::AVCaptureMetadataOutput");
     [_session addOutput:metadataOutput];
-    // 5(1)添加摄像输出流到会话对象；与 3(1) 构成识了别光线强弱
+  }
+  
+  // 5(1)添加摄像输出流到会话对象；与 3(1) 构成识了别光线强弱
+  if ([_session canAddOutput:_videoDataOutput])
+  {
+    NSLog(@"session::AVCaptureVideoDataOutput");
     [_session addOutput:_videoDataOutput];
+  }
+  //添加静态图片输出
+  if ([_session canAddOutput:_stillImageOutput])
+  {
+    NSLog(@"session::AVCaptureStillImageOutput");
+    [_session addOutput:_stillImageOutput];
+  }
 
-    // 6、添加摄像设备输入流到会话对象
-    [_session addInput:deviceInput];
-
-    // 7、设置数据输出类型，需要将数据输出添加到会话后，才能指定元数据类型，否则会报错
-    // 设置扫码支持的编码格式(如下设置条形码和二维码兼容)
-    // @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code,  AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code]
-   //如果没有设置的编码格式，设置扫码支持的编码格式，那么默认设置默认支持
-   if (metadataObjectTypes.count == 0) {
-     metadataObjectTypes = [self defaultMetaDataObjectTypes];
-    }
-    metadataOutput.metadataObjectTypes = metadataObjectTypes;
+  // 6、添加摄像设备输入流到会话对象
+  if ([_session canAddInput:_deviceInput])
+  {
+    NSLog(@"session::AVCaptureDeviceInput");
+    [_session addInput:_deviceInput];
+  }
+  
+  // 7、设置数据输出类型，需要将数据输出添加到会话后，才能指定元数据类型，否则会报错
+  // 设置扫码支持的编码格式(如下设置条形码和二维码兼容)
+  // @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code,  AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code]
+  //如果没有设置的编码格式，设置扫码支持的编码格式，那么默认设置默认支持
+  if (metadataObjectTypes.count == 0) {
+    metadataObjectTypes = [self defaultMetaDataObjectTypes];
+  }
+  metadataOutput.metadataObjectTypes = metadataObjectTypes;
   
   
-    // 8、实例化预览图层, 传递_session是为了告诉图层将来显示什么内容
-    _videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
-    // 保持纵横比；填充层边界
-    _videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    CGFloat x = 0;
-    CGFloat y = 0;
-    CGFloat w = [UIScreen mainScreen].bounds.size.width;
-    CGFloat h = [UIScreen mainScreen].bounds.size.height;
-    _videoPreviewLayer.frame = CGRectMake(x, y, w, h);
-    [currentController.view.layer insertSublayer:_videoPreviewLayer atIndex:0];
-    
-    // 9、启动会话
-    [_session startRunning];
+  // 8、实例化预览图层, 传递_session是为了告诉图层将来显示什么内容
+  _videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
+  // 保持纵横比；填充层边界
+  _videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+  CGFloat x = 0;
+  CGFloat y = 0;
+  CGFloat w = [UIScreen mainScreen].bounds.size.width;
+  CGFloat h = [UIScreen mainScreen].bounds.size.height;
+  _videoPreviewLayer.frame = CGRectMake(x, y, w, h);
+  [currentController.view.layer insertSublayer:_videoPreviewLayer atIndex:0];
+  
+  // 9、启动会话
+  [_session startRunning];
 }
 
 
@@ -180,7 +211,8 @@ static KYQRCodeScanManager *_instance;
   return types;
 }
 
-#pragma mark - - - AVCaptureMetadataOutputObjectsDelegate
+#pragma mark  - AVCaptureMetadataOutputObjectsDelegate 扫瞄到二维码之后，会调用delegate
+
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
   
   if (_currAudioFilePath.length > 0) {
@@ -199,7 +231,8 @@ static KYQRCodeScanManager *_instance;
   }
 }
 
-#pragma mark - - - AVCaptureVideoDataOutputSampleBufferDelegate的方法
+#pragma mark  - AVCaptureVideoDataOutputSampleBufferDelegate的方法 获取实时拍照的视频流
+
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
     // 这个方法会时时调用，但内存很稳定
     CFDictionaryRef metadataDict = CMCopyDictionaryOfAttachments(NULL,sampleBuffer, kCMAttachmentMode_ShouldPropagate);
