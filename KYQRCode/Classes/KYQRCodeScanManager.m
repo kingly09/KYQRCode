@@ -135,7 +135,6 @@ static KYQRCodeScanManager *_instance;
     metadataOutput.metadataObjectTypes = metadataObjectTypes;
   
   
-    
     // 8、实例化预览图层, 传递_session是为了告诉图层将来显示什么内容
     _videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
     // 保持纵横比；填充层边界

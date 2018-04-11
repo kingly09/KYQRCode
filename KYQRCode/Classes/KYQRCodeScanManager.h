@@ -53,7 +53,8 @@
  *  @param currentController      KYQRCodeScanManager 所在控制器
  */
 - (void)setupSessionPreset:(NSString *)sessionPreset metadataObjectTypes:(NSArray *)metadataObjectTypes currentController:(UIViewController *)currentController;
-
+//默认支持码的类别 扫码支持的编码格式
+- (NSArray *)defaultMetaDataObjectTypes;
 //该设备没有打开摄像头
 +(BOOL)checkMediaTypeVideo;
 //检查是否有相机权限
