@@ -42,9 +42,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
- 
-  //不延时，可能会导致界面黑屏并卡住一会
-  //[self performSelector:@selector(startScan) withObject:nil afterDelay:0.05];
   
 }
 
@@ -68,7 +65,8 @@
   
   [self.view addSubview:self.scanningView];
   [self setupNavigationBar];
-
+  [self setupQRCodeScanning];
+  
   [self.view addSubview:self.promptLabel];
   /// 为了 UI 效果
   [self.view addSubview:self.bottomView];
@@ -77,19 +75,6 @@
   [self.view addSubview:self.flashlightBtn];
 }
 
-/**
- 开始扫描二维码
- */
-- (void) startScan {
-  
-  [self setupQRCodeScanning];
-
-  [self.scanningView addTimer];
-  [_manager resetSampleBufferDelegate];
-  
-
-  
-}
 
 - (void)setupNavigationBar {
   self.navigationItem.title = @"扫一扫";
@@ -122,15 +107,17 @@
 }
 
 - (void)setupQRCodeScanning {
-  self.manager = [KYQRCodeScanManager sharedManager];
-  // AVCaptureSessionPreset1920x1080 推荐使用，对于小型的二维码读取率较高
-  [_manager setupSessionPreset:AVCaptureSessionPreset1920x1080 metadataObjectTypes:nil currentController:self];
-  _manager.delegate = self;
   
-  // 自定义播放音频
-  NSString *audioFilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/sound.caf"];
-  _manager.currAudioFilePath = audioFilePath;
-  
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    self.manager = [KYQRCodeScanManager sharedManager];
+    // AVCaptureSessionPreset1920x1080 推荐使用，对于小型的二维码读取率较高
+    [_manager setupSessionPreset:AVCaptureSessionPreset1920x1080 metadataObjectTypes:nil currentController:self];
+    _manager.delegate = self;
+    
+    // 自定义播放音频
+    NSString *audioFilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/sound.caf"];
+    _manager.currAudioFilePath = audioFilePath;
+  });
 }
 
 #pragma mark  - KYQRCodeAlbumManagerDelegate
@@ -176,6 +163,10 @@
 withAVCaptureVideoDataOutput:(AVCaptureVideoDataOutput *)captureVideoDataOutput {
   
   
+  [self.scanningView addTimer];
+  [_manager resetSampleBufferDelegate];
+  //停止loading
+  [self.scanningView stopDeviceReadying];
 }
 
 /**

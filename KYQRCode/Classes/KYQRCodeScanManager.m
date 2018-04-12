@@ -186,21 +186,22 @@ static KYQRCodeScanManager *_instance;
   
   // 9、启动扫描会话
   [self loadScan];
- // [_session startRunning];
+ 
 }
 
 //启动扫描
 -(void)loadScan
 {
-//  [_loaddingIndicatorView startAnimating ];
-//  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//    // [self.captureSession startRunning];
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//      [_loaddingIndicatorView stopAnimating];
-//      [UIView animateWithDuration:0.25 animations:^{
-//
-//    });
-//  });
+
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+     [_session startRunning];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      
+      if (self.delegate && [self.delegate respondsToSelector:@selector(QRCodeScanManager:withAVCaptureSession:withAVCaptureDevice:withAVCaptureDeviceInput:withAVCaptureVideoDataOutput:)]) {
+        [self.delegate QRCodeScanManager:self withAVCaptureSession:_session withAVCaptureDevice:_device withAVCaptureDeviceInput:_deviceInput withAVCaptureVideoDataOutput:_videoDataOutput];
+      }
+      });
+  });
 }
 
 /**
