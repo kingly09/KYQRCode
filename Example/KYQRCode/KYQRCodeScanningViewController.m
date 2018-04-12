@@ -42,13 +42,37 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
   
-  self.view.backgroundColor = [UIColor clearColor];
+  self.view.backgroundColor = [UIColor blackColor];
   self.automaticallyAdjustsScrollViewInsets = NO;
   
   [self.view addSubview:self.scanningView];
   [self setupNavigationBar];
-  [self setupQRCodeScanning];
+
   [self.view addSubview:self.promptLabel];
+}
+
+- (void)didReceiveMemoryWarning {
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
+  
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  //不延时，可能会导致界面黑屏并卡住一会
+  [self performSelector:@selector(startScan) withObject:nil afterDelay:0.05];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  [self.scanningView removeTimer];
+  
+  
+}
+
+- (void)dealloc {
+  NSLog(@"KYQRCodeScanningViewController - dealloc");
+  [self removeScanningView];
 }
 
 #pragma mark - 私有方法
@@ -59,6 +83,7 @@
 
 
 - (void)setupQRCodeScanning {
+  
   self.manager = [KYQRCodeScanManager sharedManager];
 
   NSArray *arr = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code];
@@ -91,40 +116,20 @@
   
 }
 
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
+/**
+ 开始扫描二维码
+ */
+- (void) startScan {
+  
+  [self setupQRCodeScanning];
+  
   [self.scanningView addTimer];
   [_manager startRunning];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-  [super viewWillDisappear:animated];
-  [self.scanningView removeTimer];
   
+  [self.scanningView stopDeviceReadying];
   
 }
 
-- (void)dealloc {
-  NSLog(@"KYQRCodeScanningViewController - dealloc");
-  [self removeScanningView];
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - - - KYQRCodeAlbumManagerDelegate
 

@@ -42,8 +42,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
-  [self.scanningView addTimer];
-  [_manager resetSampleBufferDelegate];
+ 
+  //不延时，可能会导致界面黑屏并卡住一会
+  [self performSelector:@selector(startScan) withObject:nil afterDelay:0.05];
+  
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -61,16 +63,32 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view from its nib.
-  self.view.backgroundColor = [UIColor clearColor];
+  self.view.backgroundColor = [UIColor blackColor];
   self.automaticallyAdjustsScrollViewInsets = NO;
   
   [self.view addSubview:self.scanningView];
   [self setupNavigationBar];
-  [self setupQRCodeScanning];
+
   [self.view addSubview:self.promptLabel];
   /// 为了 UI 效果
   [self.view addSubview:self.bottomView];
+  
+  self.flashlightBtn.hidden = YES;
   [self.view addSubview:self.flashlightBtn];
+}
+
+/**
+ 开始扫描二维码
+ */
+- (void) startScan {
+  
+  [self setupQRCodeScanning];
+
+  [self.scanningView addTimer];
+  [_manager resetSampleBufferDelegate];
+  
+  [self.scanningView stopDeviceReadying];
+  
 }
 
 - (void)setupNavigationBar {
@@ -173,8 +191,12 @@
 
 
 - (void)QRCodeScanManager:(KYQRCodeScanManager *)scanManager brightnessValue:(CGFloat)brightnessValue {
+  
   if (brightnessValue < - 1) {
+    
+     self.flashlightBtn.hidden = NO;
     [self.view addSubview:self.flashlightBtn];
+  
   } else {
     if (self.isSelectedFlashlightBtn == NO) {
       [self removeFlashlightBtn];

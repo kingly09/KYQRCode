@@ -38,6 +38,10 @@
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) UIImageView *scanningline;
+/**
+ @brief  启动相机时 菊花等待
+ */
+@property(nonatomic,strong,nullable) UIActivityIndicatorView* activityView;
 
 @end
 
@@ -75,6 +79,9 @@
   
   _scanningImage = image;
   
+  
+  
+  
 }
 
 - (UIView *)contentView {
@@ -83,9 +90,23 @@
         _contentView.frame = CGRectMake(scanBorderX, scanBorderY, scanBorderW, scanBorderW);
         _contentView.clipsToBounds = YES;
         _contentView.backgroundColor = [UIColor clearColor];
+      
     }
     return _contentView;
 }
+
+- (void)stopDeviceReadying
+{
+  if (_activityView) {
+    
+    [_activityView stopAnimating];
+    [_activityView removeFromSuperview];
+
+    self.activityView = nil;
+
+  }
+}
+
 
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
@@ -203,6 +224,15 @@
     }
 
     [rightBottomPath stroke];
+  
+  //设备启动状态提示
+  if (!_activityView)
+  {
+    self.activityView = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(scanBorderX+(scanBorderW -30)/2, scanBorderY + (scanBorderW -30)/2, 30, 30)];
+    [_activityView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self addSubview:_activityView];
+    [_activityView startAnimating];
+  }
 }
 
 #pragma mark - - - 添加定时器

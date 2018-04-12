@@ -66,6 +66,9 @@ typedef enum : NSUInteger {
 
 /** 移除定时器(切记：一定要在Controller视图消失的时候，停止定时器) */
 - (void)removeTimer;
-
+/**
+ 停止菊花等待
+ */
+- (void)stopDeviceReadying;
 
 @end
