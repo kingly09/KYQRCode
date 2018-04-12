@@ -83,7 +83,7 @@
     return;
   }
   
-  KYGridQRCodeScanningViewController *VC = [[KYGridQRCodeScanningViewController alloc] init];
+  KYQRCodeScanningViewController *VC = [[KYQRCodeScanningViewController alloc] init];
   [self.navigationController pushViewController:VC animated:YES];
   
 }

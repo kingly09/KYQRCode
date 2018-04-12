@@ -40,9 +40,17 @@
 
 @implementation KYGridQRCodeScanningViewController
 
+#pragma mark - 生命周期
+- (void)viewDidLoad {
+  [super viewDidLoad];
+  // Do any additional setup after loading the view from its nib.
+  [self setupUIView];
+  
+}
+
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
-  
+  [self startScan];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -57,9 +65,10 @@
   [self removeScanningView];
 }
 
-- (void)viewDidLoad {
-  [super viewDidLoad];
-  // Do any additional setup after loading the view from its nib.
+#pragma mark - 初始化UI界面
+
+- (void) setupUIView {
+  
   self.view.backgroundColor = [UIColor blackColor];
   self.automaticallyAdjustsScrollViewInsets = NO;
   
@@ -68,42 +77,16 @@
   [self setupQRCodeScanning];
   
   [self.view addSubview:self.promptLabel];
-  /// 为了 UI 效果
   [self.view addSubview:self.bottomView];
   
   self.flashlightBtn.hidden = YES;
   [self.view addSubview:self.flashlightBtn];
+  
 }
-
 
 - (void)setupNavigationBar {
   self.navigationItem.title = @"扫一扫";
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"相册" style:(UIBarButtonItemStyleDone) target:self action:@selector(rightBarButtonItenAction)];
-}
-
-- (KYQRCodeScanningView *)scanningView {
-  if (!_scanningView) {
-    _scanningView = [[KYQRCodeScanningView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.9 * self.view.frame.size.height)];
-  }
-  return _scanningView;
-}
-- (void)removeScanningView {
-  [self.scanningView removeTimer];
-  [self.scanningView removeFromSuperview];
-  self.scanningView = nil;
-  [_manager cancelSampleBufferDelegate];
-  _manager = nil;
-  
-}
-
-- (void)rightBarButtonItenAction {
-  KYQRCodeAlbumManager *manager = [KYQRCodeAlbumManager sharedManager];
-  [manager readQRCodeFromAlbumWithCurrentController:self];
-  manager.delegate = self;
-  
-  if (manager.isPHAuthorization == YES) {
-    [self.scanningView removeTimer];
-  }
 }
 
 - (void)setupQRCodeScanning {
@@ -119,6 +102,19 @@
     _manager.currAudioFilePath = audioFilePath;
   });
 }
+
+
+- (void)rightBarButtonItenAction {
+  KYQRCodeAlbumManager *manager = [KYQRCodeAlbumManager sharedManager];
+  [manager readQRCodeFromAlbumWithCurrentController:self];
+  manager.delegate = self;
+  
+  if (manager.isPHAuthorization == YES) {
+    [self.scanningView removeTimer];
+  }
+}
+
+
 
 #pragma mark  - KYQRCodeAlbumManagerDelegate
 - (void)QRCodeAlbumManagerDidCancelWithImagePickerController:(KYQRCodeAlbumManager *)albumManager {
@@ -224,7 +220,17 @@ withAVCaptureVideoDataOutput:(AVCaptureVideoDataOutput *)captureVideoDataOutput 
   }
 }
 #pragma mark - 自定义视图
+//初始化可见扫描视图
+- (KYQRCodeScanningView *)scanningView {
+  if (!_scanningView) {
+    _scanningView = [[KYQRCodeScanningView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.9 * self.view.frame.size.height)];
+    _scanningView.scanningAnimationStyle = ScanningAnimationStyleGrid;
+    _scanningView.cornerColor = [UIColor orangeColor];
 
+  }
+  return _scanningView;
+}
+//提示文案
 - (UILabel *)promptLabel {
   if (!_promptLabel) {
     _promptLabel = [[UILabel alloc] init];
@@ -241,7 +247,7 @@ withAVCaptureVideoDataOutput:(AVCaptureVideoDataOutput *)captureVideoDataOutput 
   }
   return _promptLabel;
 }
-
+//解决复杂背景显示的问题
 - (UIView *)bottomView {
   if (!_bottomView) {
     _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.scanningView.frame), self.view.frame.size.width, self.view.frame.size.height - CGRectGetMaxY(self.scanningView.frame))];
@@ -277,6 +283,15 @@ withAVCaptureVideoDataOutput:(AVCaptureVideoDataOutput *)captureVideoDataOutput 
   }
 }
 
+#pragma mark - 私有方法
+//开始扫描
+- (void)startScan
+{
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    [self.manager startRunning];
+  });
+}
+
 - (void)removeFlashlightBtn {
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     [KYQRCodeHelperTool KY_CloseFlashlight];
@@ -284,6 +299,16 @@ withAVCaptureVideoDataOutput:(AVCaptureVideoDataOutput *)captureVideoDataOutput 
     self.flashlightBtn.selected = NO;
     [self.flashlightBtn removeFromSuperview];
   });
+}
+
+
+- (void)removeScanningView {
+  [self.scanningView removeTimer];
+  [self.scanningView removeFromSuperview];
+  self.scanningView = nil;
+  [_manager cancelSampleBufferDelegate];
+  _manager = nil;
+  
 }
 
 
