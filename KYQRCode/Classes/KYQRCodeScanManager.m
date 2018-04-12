@@ -64,12 +64,16 @@ static KYQRCodeScanManager *_instance;
 
 - (void)setupSessionPreset:(NSString *)sessionPreset metadataObjectTypes:(NSArray *)metadataObjectTypes currentController:(UIViewController *)currentController {
   
-  if (sessionPreset == nil) {
-    @throw [NSException exceptionWithName:@"KYQRCode" reason:@"setupSessionPreset:metadataObjectTypes:currentController: 方法中的 sessionPreset 参数不能为空" userInfo:nil];
-  }
+  //  if (sessionPreset == nil) {
+  //    @throw [NSException exceptionWithName:@"KYQRCode" reason:@"setupSessionPreset:metadataObjectTypes:currentController: 方法中的 sessionPreset 参数不能为空" userInfo:nil];
+  //  }
   
-  if (metadataObjectTypes == nil) {
-    @throw [NSException exceptionWithName:@"KYQRCode" reason:@"setupSessionPreset:metadataObjectTypes:currentController: 方法中的 metadataObjectTypes 参数不能为空" userInfo:nil];
+  //  if (metadataObjectTypes == nil) {
+  //    @throw [NSException exceptionWithName:@"KYQRCode" reason:@"setupSessionPreset:metadataObjectTypes:currentController: 方法中的 metadataObjectTypes 参数不能为空" userInfo:nil];
+  //  }
+  
+  if (sessionPreset == nil) {
+    sessionPreset = AVCaptureSessionPresetHigh;
   }
   
   if (currentController == nil) {

@@ -86,9 +86,9 @@
   
   self.manager = [KYQRCodeScanManager sharedManager];
 
-  NSArray *arr = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code];
+  NSArray *arr = @[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code,  AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code];
   // AVCaptureSessionPreset1920x1080 推荐使用，对于小型的二维码读取率较高
-  [_manager setupSessionPreset:AVCaptureSessionPreset1920x1080 metadataObjectTypes:arr currentController:self];
+  [_manager setupSessionPreset:AVCaptureSessionPresetHigh metadataObjectTypes:arr currentController:self];
   [_manager cancelSampleBufferDelegate];
   _manager.delegate = self;
   
