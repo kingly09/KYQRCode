@@ -44,7 +44,7 @@
   [super viewDidAppear:animated];
  
   //不延时，可能会导致界面黑屏并卡住一会
-  [self performSelector:@selector(startScan) withObject:nil afterDelay:0.05];
+  //[self performSelector:@selector(startScan) withObject:nil afterDelay:0.05];
   
 }
 
@@ -87,7 +87,7 @@
   [self.scanningView addTimer];
   [_manager resetSampleBufferDelegate];
   
-  [self.scanningView stopDeviceReadying];
+
   
 }
 
@@ -160,6 +160,30 @@
 }
 
 #pragma mark  - KYQRCodeScanManagerDelegate
+/**
+ 启动扫描会话完成
+ 
+ @param scanManager 二维码管理对象
+ @param captureSession 会话
+ @param captureDevice 摄像设备
+ @param captureDeviceInput 摄像设备输入流
+ @param captureVideoDataOutput 摄像数据输出流
+ */
+- (void)QRCodeScanManager:(KYQRCodeScanManager *)scanManager
+     withAVCaptureSession:(AVCaptureSession *)captureSession
+      withAVCaptureDevice:(AVCaptureDevice *)captureDevice
+ withAVCaptureDeviceInput:(AVCaptureDeviceInput *)captureDeviceInput
+withAVCaptureVideoDataOutput:(AVCaptureVideoDataOutput *)captureVideoDataOutput {
+  
+  
+}
+
+/**
+ 二维码扫描获取数据的回调方法
+ 
+ @param scanManager 二维码管理对象
+ @param metadataObjects 扫描二维码数据信息
+ */
 - (void)QRCodeScanManager:(KYQRCodeScanManager *)scanManager didOutputMetadataObjects:(NSArray *)metadataObjects {
   NSLog(@"metadataObjects - - %@", metadataObjects);
   if (metadataObjects != nil && metadataObjects.count > 0) {
@@ -189,6 +213,12 @@
 }
 
 
+/**
+ 根据光线强弱值打开手电筒的方法
+ 
+ @param scanManager 二维码管理对象
+ @param brightnessValue 光线强弱值
+ */
 - (void)QRCodeScanManager:(KYQRCodeScanManager *)scanManager brightnessValue:(CGFloat)brightnessValue {
   
   if (brightnessValue < - 1) {
@@ -202,6 +232,7 @@
     }
   }
 }
+#pragma mark - 自定义视图
 
 - (UILabel *)promptLabel {
   if (!_promptLabel) {
@@ -228,7 +259,7 @@
   return _bottomView;
 }
 
-#pragma mark - - - 闪光灯按钮
+#pragma mark  - 闪光灯按钮
 - (UIButton *)flashlightBtn {
   if (!_flashlightBtn) {
     // 添加闪光灯按钮

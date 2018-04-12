@@ -60,7 +60,7 @@
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
   //不延时，可能会导致界面黑屏并卡住一会
-  [self performSelector:@selector(startScan) withObject:nil afterDelay:0.05];
+  //[self performSelector:@selector(startScan) withObject:nil afterDelay:0.05];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

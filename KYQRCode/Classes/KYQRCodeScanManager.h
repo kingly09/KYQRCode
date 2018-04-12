@@ -32,10 +32,37 @@
 @protocol KYQRCodeScanManagerDelegate <NSObject>
 
 @required
-/** 二维码扫描获取数据的回调方法 (metadataObjects: 扫描二维码数据信息) */
+
+/**
+ 二维码扫描获取数据的回调方法
+
+ @param scanManager 二维码管理对象
+ @param metadataObjects 扫描二维码数据信息
+ */
 - (void)QRCodeScanManager:(KYQRCodeScanManager *)scanManager didOutputMetadataObjects:(NSArray *)metadataObjects;
 @optional
-/** 根据光线强弱值打开手电筒的方法 (brightnessValue: 光线强弱值) */
+
+/**
+ 启动扫描会话完成
+
+ @param scanManager 二维码管理对象
+ @param captureSession 会话
+ @param captureDevice 摄像设备
+ @param captureDeviceInput 摄像设备输入流
+ @param captureVideoDataOutput 摄像数据输出流
+ */
+- (void)QRCodeScanManager:(KYQRCodeScanManager *)scanManager
+     withAVCaptureSession:(AVCaptureSession *)captureSession
+     withAVCaptureDevice:(AVCaptureDevice *)captureDevice
+ withAVCaptureDeviceInput:(AVCaptureDeviceInput *)captureDeviceInput
+withAVCaptureVideoDataOutput:(AVCaptureVideoDataOutput *)captureVideoDataOutput;
+
+/**
+ 根据光线强弱值打开手电筒的方法
+
+ @param scanManager 二维码管理对象
+ @param brightnessValue 光线强弱值
+ */
 - (void)QRCodeScanManager:(KYQRCodeScanManager *)scanManager brightnessValue:(CGFloat)brightnessValue;
 @end
 
@@ -72,5 +99,22 @@
 /** 取消根据光线强弱值打开手电筒的 delegate 方法 */
 - (void)cancelSampleBufferDelegate;
 
+#pragma mark - 摄像机镜头
+/**
+ @brief 获取摄像机最大拉远镜头
+ @return 放大系数
+ */
+- (CGFloat)getVideoMaxScale;
+
+/**
+ @brief 获取摄像机当前镜头系数
+ @return 系数
+ */
+-(CGFloat)getVideoZoomFactor;
+/**
+ @brief 拉近拉远镜头
+ @param scale 系数
+ */
+- (void)setVideoScale:(CGFloat)scale;
 @end
 

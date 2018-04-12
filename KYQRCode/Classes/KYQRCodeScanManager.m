@@ -35,6 +35,7 @@
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
 
 @property(nonatomic,strong)  AVCaptureStillImageOutput *stillImageOutput;//拍照
+@property (nonatomic,weak) UIViewController *viewController;    //视频预览显示视图
 
 @end
 
@@ -87,26 +88,28 @@ static KYQRCodeScanManager *_instance;
   _deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:_device error:nil];
   
   //添加自动白平衡，自动对焦功能，自动曝光
-  [_deviceInput.device lockForConfiguration:nil];
-  //自动白平衡
-  if ([_device isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance])
+  if ([_deviceInput.device lockForConfiguration:nil])
   {
-     NSLog(@"KYQRCode::AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance");
-    [_deviceInput.device setWhiteBalanceMode:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance];
+    //自动白平衡
+    if ([_device isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance])
+    {
+      NSLog(@"KYQRCode::AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance");
+      [_deviceInput.device setWhiteBalanceMode:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance];
+    }
+    //先进行判断是否支持控制对焦,不开启自动对焦功能，很难识别二维码。
+    if (_device.isFocusPointOfInterestSupported &&[_device isFocusModeSupported:AVCaptureFocusModeAutoFocus])
+    {
+      NSLog(@"KYQRCode::AVCaptureFocusModeContinuousAutoFocus");
+      [_deviceInput.device setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+    }
+    //自动曝光
+    if ([_device isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure])
+    {
+      NSLog(@"KYQRCode::AVCaptureExposureModeContinuousAutoExposure");
+      [_deviceInput.device setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
+    }
+    [_deviceInput.device unlockForConfiguration];
   }
-  //先进行判断是否支持控制对焦,不开启自动对焦功能，很难识别二维码。
-  if (_device.isFocusPointOfInterestSupported &&[_device isFocusModeSupported:AVCaptureFocusModeAutoFocus])
-  {
-    NSLog(@"KYQRCode::AVCaptureFocusModeContinuousAutoFocus");
-    [_deviceInput.device setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
-  }
-  //自动曝光
-  if ([_device isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure])
-  {
-    NSLog(@"KYQRCode::AVCaptureExposureModeContinuousAutoExposure");
-    [_deviceInput.device setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
-  }
-  [_deviceInput.device unlockForConfiguration];
   
   // 3、创建元数据输出流
   AVCaptureMetadataOutput *metadataOutput = [[AVCaptureMetadataOutput alloc] init];
@@ -181,10 +184,24 @@ static KYQRCodeScanManager *_instance;
   _videoPreviewLayer.frame = CGRectMake(x, y, w, h);
   [currentController.view.layer insertSublayer:_videoPreviewLayer atIndex:0];
   
-  // 9、启动会话
-  [_session startRunning];
+  // 9、启动扫描会话
+  [self loadScan];
+ // [_session startRunning];
 }
 
+//启动扫描
+-(void)loadScan
+{
+//  [_loaddingIndicatorView startAnimating ];
+//  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//    // [self.captureSession startRunning];
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//      [_loaddingIndicatorView stopAnimating];
+//      [UIView animateWithDuration:0.25 animations:^{
+//
+//    });
+//  });
+}
 
 /**
  @brief  默认支持码的类别
@@ -214,6 +231,19 @@ static KYQRCodeScanManager *_instance;
   
   return types;
 }
+
+- (AVCaptureConnection *)connectionWithMediaType:(NSString *)mediaType fromConnections:(NSArray *)connections
+{
+  for ( AVCaptureConnection *connection in connections ) {
+    for ( AVCaptureInputPort *port in [connection inputPorts] ) {
+      if ( [[port mediaType] isEqual:mediaType] ) {
+        return connection;
+      }
+    }
+  }
+  return nil;
+}
+
 
 #pragma mark  - AVCaptureMetadataOutputObjectsDelegate 扫瞄到二维码之后，会调用delegate
 
@@ -253,11 +283,22 @@ static KYQRCodeScanManager *_instance;
 }
 
 - (void)startRunning {
+  
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [_session startRunning];
+  });
+  
+  
 }
 
 - (void)stopRunning {
-    [_session stopRunning];
+  
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    if (_session.isRunning)
+    {
+     [_session stopRunning];
+    }
+  });
 }
 
 - (void)videoPreviewLayerRemoveFromSuperlayer {
@@ -320,6 +361,58 @@ void soundCompleteCallback(SystemSoundID soundID, void *clientData){
   }
   return YES;
 }
+#pragma mark - 摄像机镜头
+/**
+ @brief 获取摄像机最大拉远镜头
+ @return 放大系数
+ */
+- (CGFloat)getVideoMaxScale {
+  
+  [_deviceInput.device lockForConfiguration:nil];
+  AVCaptureConnection *videoConnection = [self connectionWithMediaType:AVMediaTypeVideo fromConnections:[[self stillImageOutput] connections]];
+  CGFloat maxScale = videoConnection.videoMaxScaleAndCropFactor;
+  [_deviceInput.device unlockForConfiguration];
+  
+  return maxScale;
+  
+}
 
+/**
+ @brief 获取摄像机当前镜头系数
+ @return 系数
+ */
+-(CGFloat)getVideoZoomFactor {
+  
+   return _deviceInput.device.videoZoomFactor;
+}
+/**
+ @brief 拉近拉远镜头
+ @param scale 系数
+ */
+- (void)setVideoScale:(CGFloat)scale {
+  
+  [_deviceInput.device lockForConfiguration:nil];
+  
+  AVCaptureConnection *videoConnection = [self connectionWithMediaType:AVMediaTypeVideo fromConnections:[[self stillImageOutput] connections]];
+  CGFloat maxScaleAndCropFactor = ([[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor])/16;
+  
+  if (scale > maxScaleAndCropFactor)
+    scale = maxScaleAndCropFactor;
+  
+  CGFloat zoom = scale / videoConnection.videoScaleAndCropFactor;
+  
+  videoConnection.videoScaleAndCropFactor = scale;
+  
+  [_deviceInput.device unlockForConfiguration];
+  
+  CGAffineTransform transform = _viewController.view.transform;
+  [CATransaction begin];
+  [CATransaction setAnimationDuration:.025];
+  
+  _viewController.view.transform = CGAffineTransformScale(transform, zoom, zoom);
+  
+  [CATransaction commit];
+  
+}
 @end
 

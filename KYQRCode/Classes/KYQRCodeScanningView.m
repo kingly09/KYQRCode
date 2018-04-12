@@ -235,7 +235,7 @@
   }
 }
 
-#pragma mark - - - 添加定时器
+#pragma mark - 添加定时器
 - (void)addTimer {
     CGFloat scanninglineX = 0;
     CGFloat scanninglineY = 0;
