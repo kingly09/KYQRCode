@@ -20,6 +20,8 @@ it, simply add the following line to your Podfile:
 pod 'KYQRCode'
 ```
 
+
+
 ## Author
 
 kingly09, libintm@163.com
