@@ -6,6 +6,5 @@ target 'KYQRCode_Example' do
   target 'KYQRCode_Tests' do
     inherit! :search_paths
 
-    
   end
 end
