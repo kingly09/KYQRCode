@@ -1,8 +1,10 @@
 use_frameworks!
+platform :ios, '8.0'
 
 target 'KYQRCode_Example' do
   pod 'KYQRCode', :path => '../'
-
+  pod 'ZXingObjC', '~> 3.2.2'
+  
   target 'KYQRCode_Tests' do
     inherit! :search_paths
 

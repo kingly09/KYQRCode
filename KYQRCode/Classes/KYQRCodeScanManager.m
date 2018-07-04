@@ -87,6 +87,8 @@ static KYQRCodeScanManager *_instance;
   // 2、创建摄像设备输入流
   _deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:_device error:nil];
   
+
+  
   //添加自动白平衡，自动对焦功能，自动曝光
   if ([_deviceInput.device lockForConfiguration:nil])
   {
@@ -183,6 +185,7 @@ static KYQRCodeScanManager *_instance;
   CGFloat h = [UIScreen mainScreen].bounds.size.height;
   _videoPreviewLayer.frame = CGRectMake(x, y, w, h);
   [currentController.view.layer insertSublayer:_videoPreviewLayer atIndex:0];
+  
   
   // 9、启动扫描会话
   [self loadScan];
@@ -415,5 +418,8 @@ void soundCompleteCallback(SystemSoundID soundID, void *clientData){
   [CATransaction commit];
   
 }
+
+
+
 @end
 
